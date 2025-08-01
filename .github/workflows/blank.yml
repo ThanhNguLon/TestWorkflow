@@ -1,0 +1,27 @@
+name: Simple Matrix Example
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  echo-job:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job-id: [1, 2, 3, 4, 5]
+    
+    steps:
+    - name: Echo job start
+      run: echo "Starting job number ${{ matrix.job-id }}"
+    
+    - name: Echo current time
+      run: echo "Current time is $(date)"
+    
+    - name: Echo random info
+      run: echo "This is job ${{ matrix.job-id }} running on $(hostname)"
+    
+    - name: Echo completion
+      run: echo "Job ${{ matrix.job-id }} completed successfully!"
