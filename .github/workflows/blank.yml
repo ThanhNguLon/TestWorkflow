@@ -21,6 +21,7 @@ on:
         default: '3'
         type: string
 
+# Global concurrency - chỉ cho phép 1 workflow chạy cùng lúc cho mỗi branch
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -30,6 +31,7 @@ env:
   PYTHON_VERSION: '3.9'
 
 jobs:
+  # Job khởi tạo - chạy đầu tiên
   setup:
     runs-on: ubuntu-latest
     outputs:
@@ -51,7 +53,8 @@ jobs:
         id: set-matrix
         run: |
           PARALLEL_JOBS="${{ github.event.inputs.parallel_jobs || '3' }}"
-          MATRIX=$(seq 1 $PARALLEL_JOBS | jq -R . | jq -s .)
+          # Sử dụng Python để tạo JSON matrix chính xác
+          MATRIX=$(python3 -c "import json; print(json.dumps(list(range(1, int('$PARALLEL_JOBS') + 1))))")
           echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
           echo "🔢 Test matrix: $MATRIX"
       
