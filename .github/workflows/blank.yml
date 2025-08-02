@@ -1,4 +1,4 @@
-name: Concurrency CI/CD Pipeline
+name: Advanced Concurrency CI/CD Pipeline
 
 on:
   push:
